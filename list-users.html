@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HTML5 Starter Template</title>
+  <meta name="description" content="Starter Template">
+  <meta name="author" content="Gregry Pike">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <link href="./style/list-users.css" rel="stylesheet">
+</head>
+<body>  
+    <div id="container">
+      <div class="input-wrapper">
+        <span class="delete-icon-wrapper">
+          <input type="text" id="search" onkeyup="filterData()">
+          <span class="delete-search-icon" onclick="clearSearchBar()" id="delete-search-icon">X</span>
+        </span>
+      </div>
+      
+      <div class="table-wrapper">
+        <table id="table">
+          <thead>
+            <tr>
+                <th class="user-checkbox-wrapper">Check</th>
+                <th class="user-id-wrapper" onclick="sortTable('id')" id="get-id">Id <span class="order"></span></th>
+                <th class="user-name-wrapper" onclick="sortTable('name')" id="get-name">Name <span class="order"></span></th>
+                <th class="user-email-wrapper" onclick="sortTable('email')" id="get-email">Email <span class="order">&#8595;</span></th>
+                <th class="user-created-wrapper" onclick="sortTable('created')" id="get-created">Created <span class="order"></span></th>
+                <th>Action</th>
+            </tr>
+          </thead>
+  
+          <tbody id="tbody-add-users">
+            
+          </tbody>
+        </table>
+      </div>
+
+      <table id="table-for-clone" style="display: none;">
+        <tr id='tr-users'>
+          <td class='user-checkbox-wrapper'><input type='checkbox' class="checkbox-user" id="check-box"></td>
+          <td class='user-id-wrapper'></td>
+          <td class='user-name-wrapper'></td>
+          <td class='user-email-wrapper'></td>
+          <td class='user-created-wrapper'></td>
+          <td>
+            <div class='table-data-wrapper'>
+              <button class="user-update-button" type="button" id="update-user-button">Update</button>
+              <button type='button' class='user-delete-button'>Delete</button>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+
+      <div id="buttons">
+        <select name="number-of-users" id="num-of-users" onchange="exactlyNumOfUsers()">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+
+        <button type="button" onclick="deleteMultiple()" id="delete-checked-users">Delete multiple</button>
+        <button disabled type="button" onclick="moveToFirstPage()" id="first-page-button">First Page</button>
+        <button disabled type="button" onclick="moveLeft()" id="pagination-left"><</button>
+        <button disabled type="button" onclick="moveRight()" id="pagination-right">></button>
+        <button disabled type="button" onclick="moveToLastPage()" id="last-page-button">Last Page</button>
+      </div>
+
+      <div id="add-new-user">
+        <button type="button" onclick="submitNewUser()" id="add-button">Add new user</button>
+        <form style="visibility: hidden;" id="input-form-wrapper">
+          <input type="text" id="name" required placeholder="Name" autocomplete="off">
+          <input type="email" id="email" required placeholder="Email" autocomplete="off">
+        </form>
+      </div>
+      
+      <div id="message">
+        <p id="error-message"></p>
+        <p id="succes-message"></p>
+      </div>
+
+      <div id="update-user" style="visibility: hidden;">
+        <button type="button" id="user-update" onclick="updateUser()">Update</button>
+        <input type="text" id="name-for-update" required autocomplete="off">
+        <input type="text" id="email-for-update" required autocomplete="off">
+      </div>
+    </div>
+  <script defer src="./script/list-users.js"></script>
+</body>
+</html>

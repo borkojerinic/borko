@@ -1,0 +1,22 @@
+#update-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+#update-button {
+  margin-right: 5px;
+}
+
+#update-name {
+  width: 50%;
+  margin-right: 5px;
+}
+
+#update-email {
+  width: 50%;
+}
+
+#go-back {
+  margin-top: 10px;
+}
