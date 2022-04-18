@@ -8,15 +8,14 @@
   margin-right: 5px;
 }
 
-#update-name {
-  width: 50%;
-  margin-right: 5px;
-}
-
-#update-email {
-  width: 50%;
-}
-
 #go-back {
   margin-top: 10px;
+}
+
+@media screen and (max-width: 480px) {
+  #update-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
 }

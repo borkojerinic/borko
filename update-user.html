@@ -8,16 +8,19 @@
 
     <title>Update user</title>
     <link href="./style/update-user.css" rel="stylesheet">
+    <link href="./style/list-and-update.css" rel="stylesheet">
 </head>
 <body>
     <div id="update-wrapper">
         <button type="button" id="update-button" onclick="updateUser()">Update</button>
-        <input type="text" id="update-name">
-        <input type="text" id="update-email">
+        <form id="input-form-wrapper">
+            <input type="text" id="name">
+            <input type="text" id="email">
+        </form>
     </div>
 
-    <div style="visibility: hidden;" id="error-success-update">
-        <p id="message-update"></p>
+    <div style="visibility: hidden;" id="message">
+        <p id="error-message"></p>
     </div>
 
     <button type="button" id="go-back"><</button>
