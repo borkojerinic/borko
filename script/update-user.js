@@ -3,6 +3,7 @@
 const relativePathToListUsers = './list-users.html';
 const usersFromServerPath = 'http://dev.qposoft.com:4082/api/users';
 const myId = JSON.parse(localStorage.getItem('update-user-button'));
+
 let nameBeforeUpdate = '';
 let emailBeforeUpdate = '';
 
@@ -32,20 +33,17 @@ function updateUser() {
 
     if (email.match(validEmail)) {
         if (nameBeforeUpdate !== name || emailBeforeUpdate !== email) {
-            const result = confirm("Want to update user " + nameBeforeUpdate + "?");
-            if (result) {
-                $.ajax({
-                    url: `${usersFromServerPath}/${myId}?name=${name}&email=${email}`,
-                    type: 'PUT',
-                    success: function (response) {
-                        location.href = relativePathToListUsers;
-                    },
-                    error: function (request, status, error) {
-                        document.getElementById('message').style.visibility = 'visible';
-                        document.getElementById('error-message').innerHTML = JSON.parse(request.responseText).errors.name;
-                    }
-                });
-            }
+            $.ajax({
+                url: `${usersFromServerPath}/${myId}?name=${name}&email=${email}`,
+                type: 'PUT',
+                success: function (response) {
+                    location.href = relativePathToListUsers;
+                },
+                error: function (request, status, error) {
+                    document.getElementById('message').style.visibility = 'visible';
+                    document.getElementById('error-message').innerHTML = JSON.parse(request.responseText).errors.name;
+                }
+            });
         } else {
             document.getElementById('message').style.visibility = 'visible';
             document.getElementById('error-message').innerHTML = 'Unchanged form!';
@@ -57,7 +55,27 @@ function updateUser() {
 }
 
 document.getElementById('go-back').onclick = function () {
-    location.href = relativePathToListUsers;
+    let name = document.getElementById('name').value;
+    let email = document.getElementById('email').value;
+
+    if (nameBeforeUpdate !== name || emailBeforeUpdate !== email) {
+        const result = confirm("Do u want to save changes?");
+        if (result) {
+            $.ajax({
+                url: `${usersFromServerPath}/${myId}?name=${name}&email=${email}`,
+                type: 'PUT',
+                success: function (response) {
+                    location.href = relativePathToListUsers;
+                },
+                error: function (request, status, error) {
+                    document.getElementById('message').style.visibility = 'visible';
+                    document.getElementById('error-message').innerHTML = JSON.parse(request.responseText).errors.name;
+                }
+            });
+        }
+    } else {
+        location.href = relativePathToListUsers;
+    }
 }
 
 //#endregion

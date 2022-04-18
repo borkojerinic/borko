@@ -111,10 +111,12 @@ function moveToLastPage() {
 function listUsers(users) {
     allUsers = users;
 
+    const tableBody = document.getElementById('tbody-add-users');
+
     if (users.length === 0) {
-        document.getElementById('tbody-add-users').innerHTML = 'No users found!';
+        tableBody.innerHTML = 'No users found!';
     } else {
-        document.getElementById('tbody-add-users').innerHTML = '';
+        tableBody.innerHTML = '';
 
         for (const user of users) {
             let trUsers = document.getElementById('tr-users');
@@ -140,7 +142,7 @@ function listUsers(users) {
                 location.href = `./update-user.html`;
             };
 
-            document.getElementById('tbody-add-users').appendChild(cloneUserRow);
+            tableBody.appendChild(cloneUserRow);
         }
     }
 }
@@ -425,10 +427,10 @@ function exactlyNumOfUsers() {
 }
 
 function sortTable(sortBy) {
-    const orderSpan = document.querySelector(`#get-header-${params.lastClicked.toLocaleLowerCase()} > span.order`);
+    const orderSpan = document.querySelector(`#header-${params.lastClicked.toLocaleLowerCase()} > span.order`);
     orderSpan.innerHTML = '';
 
-    const orderSort = document.querySelector(`#get-header-${sortBy} > span.order`);
+    const orderSort = document.querySelector(`#header-${sortBy} > span.order`);
 
     params.lastClicked = sortBy;
     paramsQueryString.order = sortBy;
@@ -509,7 +511,9 @@ function handleCheckBoxForDelete() {
         localStorage.removeItem(`user-names-update`);
     }
 
-    if (usersForDeleteWithId.length !== 0) {
+    if (usersForDeleteWithId.length === 0) {
+        deleteMultipleButton.disabled = true;
+    } else {
         for (const checkedUser of usersForDeleteWithId) {
             for (const user of allUsers) {
                 if (user.id === checkedUser) {
@@ -521,8 +525,6 @@ function handleCheckBoxForDelete() {
                 }
             }
         }
-    } else {
-        deleteMultipleButton.disabled = true;
     }
 }
 
