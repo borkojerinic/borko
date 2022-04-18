@@ -1,0 +1,33 @@
+#error-message {
+  color: red;
+}
+
+#name,
+#email {
+  margin-left: 5px;
+  width: 50%;
+}
+
+@media screen and (max-width: 480px) {
+  #name,
+  #email {
+    margin-left: 0px;
+    margin-top: 5px;
+    width: auto;
+  }
+
+  #input-form-wrapper {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+}
+
+#message {
+  width: 100%;
+}
+
+#input-form-wrapper {
+  display: flex;
+  flex: 1;
+}

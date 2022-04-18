@@ -43,12 +43,6 @@ body {
   margin-top: 10px;
 }
 
-#name,
-#email {
-  margin-left: 5px;
-  width: 50%;
-}
-
 @media screen and (max-width: 480px) {
   .user-id-wrapper,
   .user-name-wrapper,
@@ -76,19 +70,6 @@ body {
   #add-new-user {
     display: flex;
     justify-content: center;
-    flex-direction: column;
-  }
-
-  #name,
-  #email {
-    margin-left: 0px;
-    margin-top: 5px;
-    width: auto;
-  }
-
-  #input-form-wrapper {
-    display: flex;
-    flex: 1;
     flex-direction: column;
   }
 }
@@ -159,20 +140,7 @@ span.delete-icon-wrapper span {
   visibility: hidden;
 }
 
-#input-form-wrapper {
-  display: flex;
-  flex: 1;
-}
-
-#message {
-  width: 100%;
-}
-
-#error-message {
-  color: red;
-}
-
-#succes-message {
+#success-message {
   color: green;
 }
 

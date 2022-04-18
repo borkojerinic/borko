@@ -1,14 +1,13 @@
 //#region Variables
 
-let path = 'http://dev.qposoft.com:4082/api/users';
+const usersFromServerPath = 'http://dev.qposoft.com:4082/api/users';
 
 let allUsers = [];
 
 let usersForDeleteWithId = [];
-let succesDeleted = 0;
-
 let usersForDeleteLength;
-let deleteMultipleButton = document.getElementById('delete-checked-users');
+
+const deleteMultipleButton = document.getElementById('delete-checked-users');
 
 let deleteNumber = 0;
 let checkedUser = 0;
@@ -24,11 +23,9 @@ let paramsQueryString = {
     order: 'email',
 }
 
-let params = {
+const params = {
     lastPage: null,
-
     lastSearch: null,
-
     changeDirection: 0,
     lastClicked: 'Email',
 }
@@ -39,6 +36,10 @@ let params = {
 
 if (JSON.parse(localStorage.getItem(`params`)) !== null) {
     paramsQueryString = JSON.parse(localStorage.getItem(`params`));
+    if (paramsQueryString.search !== '') {
+        document.getElementById('delete-search-icon').style.visibility = 'visible';
+    }
+
     document.getElementById('search').value = paramsQueryString.search;
     document.getElementById('num-of-users').value = paramsQueryString.pageSize;
     localStorage.removeItem('params');
@@ -48,7 +49,7 @@ document.body.addEventListener('load', listData(paramsQueryString));
 
 function listData(paramsQueryString) {
     $.ajax({
-        url: path + '?' + new URLSearchParams(paramsQueryString).toString(),
+        url: usersFromServerPath + '?' + new URLSearchParams(paramsQueryString).toString(),
         type: 'GET',
         success: function (response) {
             listUsers(response.data);
@@ -66,20 +67,21 @@ function handlePagination(meta, links) {
     params.lastPage = meta.last_page;
 
     if (links.prev !== null) {
-        document.getElementById('first-page-button').disabled = false;
-        document.getElementById('pagination-left').disabled = false;
+        changeSide('first-page-button', 'pagination-left', false);
     } else {
-        document.getElementById('first-page-button').disabled = true;
-        document.getElementById('pagination-left').disabled = true;
+        changeSide('first-page-button', 'pagination-left', true);
     }
 
     if (links.next !== null) {
-        document.getElementById('last-page-button').disabled = false;
-        document.getElementById('pagination-right').disabled = false;
+        changeSide('last-page-button', 'pagination-right', false);
     } else {
-        document.getElementById('last-page-button').disabled = true;
-        document.getElementById('pagination-right').disabled = true;
+        changeSide('last-page-button', 'pagination-right', true);
     }
+}
+
+function changeSide(firstLastPage, moveLeftRight, boolean) {
+    document.getElementById(firstLastPage).disabled = boolean;
+    document.getElementById(moveLeftRight).disabled = boolean;
 }
 
 function moveLeft() {
@@ -109,10 +111,12 @@ function moveToLastPage() {
 function listUsers(users) {
     allUsers = users;
 
+    const tableBody = document.getElementById('tbody-add-users');
+
     if (users.length === 0) {
-        document.getElementById('tbody-add-users').innerHTML = 'No users found!';
+        tableBody.innerHTML = 'No users found!';
     } else {
-        document.getElementById('tbody-add-users').innerHTML = '';
+        tableBody.innerHTML = '';
 
         for (const user of users) {
             let trUsers = document.getElementById('tr-users');
@@ -135,10 +139,10 @@ function listUsers(users) {
                 localStorage.setItem(`user-names-update`, JSON.stringify(usersForDeleteWithName));
                 localStorage.setItem(`params`, JSON.stringify(paramsQueryString));
 
-                location.href = `../borko/update-user.html`;
+                location.href = `./update-user.html`;
             };
 
-            document.getElementById('tbody-add-users').appendChild(cloneUserRow);
+            tableBody.appendChild(cloneUserRow);
         }
     }
 }
@@ -190,7 +194,7 @@ function deleteOneUser(userId) {
         }
     }
 
-    let result = confirm("Want to delete user " + userName + "?");
+    const result = confirm("Want to delete user " + userName + "?");
 
     if (result) {
         let num = 0;
@@ -205,7 +209,7 @@ function deleteOneUser(userId) {
 
         $.ajax({
 
-            url: path + '/' + userId,
+            url: usersFromServerPath + '/' + userId,
             type: 'DELETE',
             contentType: "application/json;charset=utf-8",
             success: function (response) {
@@ -296,7 +300,7 @@ function deleteOneUser(userId) {
 
 function deleteUsers(usersForDeleteWithId, n) {
     $.ajax({
-        url: path + '/' + usersForDeleteWithId[n - 1],
+        url: usersFromServerPath + '/' + usersForDeleteWithId[n - 1],
         type: 'DELETE',
         contentType: "application/json;charset=utf-8",
         success: function (response) {
@@ -369,7 +373,7 @@ function submitNewUser() {
         document.getElementById("email").value = '';
 
         document.getElementById('error-message').innerHTML = '';
-        document.getElementById('succes-message').innerHTML = '';
+        document.getElementById('success-message').innerHTML = '';
 
         let user = {
             name: nameFromInput,
@@ -384,12 +388,12 @@ function submitNewUser() {
             document.getElementById('add-button').disabled = true;
 
             $.ajax({
-                url: path,
+                url: usersFromServerPath,
                 type: 'POST',
                 contentType: "application/json;charset=utf-8",
                 data: userObject,
                 success: function () {
-                    enableAndSuccessfuly();
+                    enableAndSuccessfully();
                     listData(paramsQueryString);
                 },
                 error: function (response) {
@@ -402,9 +406,9 @@ function submitNewUser() {
     }
 }
 
-function enableAndSuccessfuly() {
+function enableAndSuccessfully() {
     document.getElementById('add-button').disabled = false;
-    document.getElementById('succes-message').innerHTML = 'Successfully completed';
+    document.getElementById('success-message').innerHTML = 'Successfully completed';
 }
 
 function enableAndFailedResponse(response) {
@@ -423,10 +427,10 @@ function exactlyNumOfUsers() {
 }
 
 function sortTable(sortBy) {
-    const orderSpan = document.querySelector(`#get-${params.lastClicked.toLocaleLowerCase()} > span.order`);
+    const orderSpan = document.querySelector(`#header-${params.lastClicked.toLocaleLowerCase()} > span.order`);
     orderSpan.innerHTML = '';
 
-    const orderSort = document.querySelector(`#get-${sortBy} > span.order`);
+    const orderSort = document.querySelector(`#header-${sortBy} > span.order`);
 
     params.lastClicked = sortBy;
     paramsQueryString.order = sortBy;
@@ -507,7 +511,9 @@ function handleCheckBoxForDelete() {
         localStorage.removeItem(`user-names-update`);
     }
 
-    if (usersForDeleteWithId.length !== 0) {
+    if (usersForDeleteWithId.length === 0) {
+        deleteMultipleButton.disabled = true;
+    } else {
         for (const checkedUser of usersForDeleteWithId) {
             for (const user of allUsers) {
                 if (user.id === checkedUser) {
@@ -519,8 +525,6 @@ function handleCheckBoxForDelete() {
                 }
             }
         }
-    } else {
-        deleteMultipleButton.disabled = true;
     }
 }
 
